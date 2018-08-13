@@ -5,8 +5,6 @@ wifimanager.py - connects to Wifi networks
 * static or dynamic IP
 * JSON-based
 2018-0528 PePo adopted to pycom. add mac-address
-2018-0525 PePo exclude ftp/telnet services
-2018-0520 PePo new class for Loboris uP
 
 Format 'wificonfig.json':
 {
@@ -23,7 +21,6 @@ Format 'wificonfig.json':
 
 #pycom:
 from network import WLAN, Server
-#loboris: from network import mDNS, ftp, telnet, STA_IF, WLAN
 import machine
 import json
 from ubinascii import hexlify
@@ -41,10 +38,8 @@ class WifiManager:
         self._config = self.readjson(jsonfile)
 
         #create network in STAtion mode
-        # from network import STA_IF, WLAN #loboris
-        #self._wlan = WLAN(STA_IF)#loboris
         #pycom: device always starts up in AP-mode
-        self._wlan = WLAN(mode=WLAN.STA) #pycom: mode
+        self._wlan = WLAN(mode=WLAN.STA)
         if USE_DEBUG:
             print('WifiManager::WLAN mode:', self._wlan.mode()) #pycom: 1=STA, 2=AP)
 
@@ -91,7 +86,6 @@ class WifiManager:
     # wrapper for disconnecting network
     def disconnect(self):
         """disconnect() - de-activate network interface, but leaves Wifi radio on"""
-        #loboris: self._wlan.active(False)
         self._wlan.disconnect() # pycom - disconnect from Wifi, but leave Wif radio on.
         if USE_DEBUG:
             print('WifiManager::WLAN connected:', self._wlan.isconnected()) # DEBUG
@@ -147,9 +141,6 @@ class WifiManager:
     @property
     def mac(self):
         """returns MAC-address of device"""
-        #from ubinascii import hexlify
-        #mac = ubinascii.hexlify(network.WLAN().config('mac'),':').decode()
-        #mac = hexlify(WLAN().config('mac'),':').decode() #loboris/micropython
         mac = hexlify(self._wlan.mac(),':').decode() #pycom
         #return (mac) # lower case
         return mac.upper() #upper case
