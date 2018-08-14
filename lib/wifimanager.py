@@ -26,7 +26,7 @@ import json
 from ubinascii import hexlify
 
 # configurations
-USE_DEBUG = True   # DEBUG or not debug
+USE_DEBUG = False   # DEBUG or not debug
 
 
 class WifiManager:
@@ -149,7 +149,6 @@ class WifiManager:
 # test/usage
 if __name__ == "__main__":
     import wifimanager
-    wifi = wifimanager.WifiManager("wificonfig.json")
-    params = wifi.connect()
-    print('Device IP is {0}'.format(params[0])) # device IP
-    wifi.print_config()
+    wifi = wifimanager.WifiManager('wificonfig.json')
+    wifi.connect() # connect device to wifi
+    print('Device IP: {0}'.format(wifi._wlan.ifconfig()[0])) # device IP
