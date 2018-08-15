@@ -16,7 +16,9 @@ import wifimanager
 print('Creating wifi object with a wificonfig-json ...')
 wifi = wifimanager.WifiManager() # default JSON file
 print('EXERCISE: include connecting to Wifi...')
+
 ''' TODO: include connecting to Wifi
+
 print('Connecting to network ...')
 wifi.connect()
 print('Device IP: {0}'.format(wifi._wlan.ifconfig()[0])) # device IP
@@ -27,7 +29,8 @@ print('Device IP: {0}'.format(wifi._wlan.ifconfig()[0])) # device IP
 # #################################
 print('Updating username and password for telnet/ftp...')
 wifi.change_access('micro', 'python') #change if you want
-'''
+
+END_OF_TODO '''
 
 # #################################
 # show MAC-address
