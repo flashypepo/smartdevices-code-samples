@@ -40,12 +40,21 @@ def messageonscreen(mesg, x, y, refresh=False):
 
 
 import time
-def demo():
+
+def messagescroll(dx, dy, dt, refresh=True):
+    oled.scroll(dx, dy)
+    if refresh == True:
+        oled.show()
+
+
+def demo(s1, s2 = 'Welkom!!'):
     whitescreen()
     time.sleep(1)
 
     blankscreen()
-    messageonscreen('Welkom Peter', 0,0, True)
+    messageonscreen(s2, 0, 0, False)
+    messageonscreen(s1[:15], 0, 13, False)
+    messageonscreen(s1[15:], 0, 23, True)
 
 
 print(__name__, 'module loaded')
