@@ -36,3 +36,10 @@ END_OF_TODO '''
 # show MAC-address
 # #################################
 print('MAC-adres:', wifi.mac)
+
+# #################################
+# Experment: OLED 128*32 SPI
+# 2018-0819 okay with ssd1306 of DiCola
+# #################################
+import test_oled_spi
+test_oled_spi.demo(wifi.mac)
