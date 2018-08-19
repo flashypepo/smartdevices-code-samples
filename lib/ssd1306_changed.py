@@ -1,5 +1,7 @@
 # MicroPython SSD1306 OLED driver, I2C and SPI interfaces
 # 2018-0818 Peter: https://raw.githubusercontent.com/micropython/micropython/master/drivers/display/ssd1306.py
+# 2018-0819 PePo change in SSD1306 constructor
+#     TODO: module is not working: ArgumentError when instantiating a SSD1306_SPI object.
 
 from micropython import const
 import framebuf
@@ -33,8 +35,8 @@ class SSD1306(framebuf.FrameBuffer):
         self.external_vcc = external_vcc
         self.pages = self.height // 8
         self.buffer = bytearray(self.pages * self.width)
-        #2018-0819 ORG: super().__init__(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
-        super().__init__(self.buffer, self.width, self.height, framebuf.MVLSB)
+        #2018-0819 PePo changed: super().__init__(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
+        super().__init__(self.buffer, self.width, self.height, framebuf.MVLSB) # 2018-0819 changed PePo for LoPy4
         self.init_display()
 
     def init_display(self):
