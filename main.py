@@ -1,6 +1,7 @@
 # main.py
 # 1. connect to Wifi - Windesheim
 # 2. change server password
+# 2018-0820 Peter - OMG no crednetials online using GitHub
 # 2018-0814 Peter - displays only MAC-address
 
 import micropython
@@ -14,7 +15,7 @@ micropython.alloc_emergency_exception_buf(100)
 import wifimanager
 
 print('Creating wifi object with a wificonfig-json ...')
-wifi = wifimanager.WifiManager() # default JSON file
+wifi = wifimanager.WifiManager('config/wificonfig.json') # subfolder JSON file
 print('EXERCISE: include connecting to Wifi...')
 
 ''' TODO: include connecting to Wifi
