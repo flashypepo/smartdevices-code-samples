@@ -15,11 +15,11 @@ micropython.alloc_emergency_exception_buf(100)
 import wifimanager
 
 print('Creating wifi object with a wificonfig-json ...')
-wifi = wifimanager.WifiManager('config/wificonfig.json') # subfolder JSON file
-print('EXERCISE: include connecting to Wifi...')
+wifi = wifimanager.WifiManager('config/wificonfig_home.json') # HOME config
+#TODO: wifi = wifimanager.WifiManager('wificonfig.json') # SAMPLE Wifi-WF config
+#print('EXERCISE: include connecting to Wifi...')
 
-''' TODO: include connecting to Wifi
-
+#''' TODO: include connecting to Wifi
 print('Connecting to network ...')
 wifi.connect()
 print('Device IP: {0}'.format(wifi._wlan.ifconfig()[0])) # device IP
@@ -31,7 +31,9 @@ print('Device IP: {0}'.format(wifi._wlan.ifconfig()[0])) # device IP
 print('Updating username and password for telnet/ftp...')
 wifi.change_access('micro', 'python') #change if you want
 
-END_OF_TODO '''
+#END_OF_TODO '''
+
+print('TODO: EXERCISE: include connecting to Wifi...')
 
 # #################################
 # show MAC-address
