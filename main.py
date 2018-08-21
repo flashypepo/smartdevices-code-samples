@@ -10,10 +10,10 @@ import micropython
 micropython.alloc_emergency_exception_buf(100)
 
 # used devices in main:
-use_oled_spi = True
-use_oled_i2c = True
-use_bme280 = True
-
+use_oled_spi = True # OLED - SPI (default)
+use_oled_i2c = True # OLED - I2C
+use_bme280 = True   # weatherstation demo
+use_gfx = True      # graphics demo
 
 # #################################
 # Wifi Windesheim network
@@ -52,12 +52,23 @@ print('MAC-adres:', wifi.mac)
 # 2018-0819 okay with ssd1306 of DiCola
 # #################################
 if use_oled_spi:
-    import test_oled_spi
-    test_oled_spi.demo(wifi.mac)
+    from test_oled_spi import demo
+    demo(wifi.mac)
 
 if use_oled_i2c:
-    import test_oled_i2c
-    test_oled_i2c.demo(wifi.mac)
+    from test_oled_i2c import demo
+    demo(wifi.mac)
+
+if use_gfx and use_oled_spi:
+    from test_oled_spi import oled as display
+    from test_gfx import demo
+    demo(display)
+
+if use_gfx and use_oled_i2c:
+    from test_oled_i2c import oled as display
+    from test_gfx import demo
+    demo(display)
+
 
 # #################################
 # Experment: BME280, I2C temperature sensor
