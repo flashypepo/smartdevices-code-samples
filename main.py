@@ -9,6 +9,11 @@ import micropython
 # Pycom: https://docs.pycom.io/chapter/firmwareapi/micropython/micropython.html
 micropython.alloc_emergency_exception_buf(100)
 
+# used devices in main:
+use_oled_spi = True
+use_oled_i2c = True
+
+
 # #################################
 # Wifi Windesheim network
 # #################################
@@ -41,8 +46,14 @@ print('TODO: EXERCISE: include connecting to Wifi...')
 print('MAC-adres:', wifi.mac)
 
 # #################################
-# Experment: OLED 128*32 SPI
+# Experment: OLED 128*32 SPI and I2C
+# 2018-0821 added OLED-I2C
 # 2018-0819 okay with ssd1306 of DiCola
 # #################################
-import test_oled_spi
-test_oled_spi.demo(wifi.mac)
+if use_oled_spi:
+    import test_oled_spi
+    test_oled_spi.demo(wifi.mac)
+
+if use_oled_i2c:
+    import test_oled_i2c
+    test_oled_i2c.demo(wifi.mac)
