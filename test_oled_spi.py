@@ -9,14 +9,13 @@ from ssd1306 import SSD1306_SPI as ssd
 #spi = SPI(0, mode=SPI.MASTER, baudrate=8000000, polarity=0, phase=0)
 spi = SPI(0, mode=SPI.MASTER) # use defaults
 
-dc_pin  = Pin('P9') # G16
-rst_pin = Pin('P8') # G15
+dc_pin  = Pin('P22') #G9, was Pin('P9') # G16
+rst_pin = Pin('P23') #G10, was Pin('P8') # G15
 cs_pin  = Pin('P12')# G28
 
 #oled = ssd(128, 32, spi, dc, rst, cs)
 #oled = ssd(128, 32, spi, Pin('P9'), Pin('P8'), Pin('P12'))
-#OK: oled = ssd(128, 32, spi, dc_pin, rst_pin, cs_pin)
-oled = ssd(128, 32, spi, Pin('P9'), Pin('P8'), Pin('P12'))
+oled = ssd(128, 32, spi, dc_pin, rst_pin, cs_pin)
 # 2018-0819 TypeError: function expected at most 5 arguments, got 6
 #oled.fill(1)
 #oled.show() # should give white screen
@@ -54,7 +53,7 @@ def demo(s1, s2 = 'Welkom!!'):
     blankscreen()
     messageonscreen(s2, 0, 0, False)
     messageonscreen(s1[:15], 0, 13, False)
-    messageonscreen(s1[15:], 0, 23, True)
+    messageonscreen(s1[15:], 0, 23 , True)
 
 
 print(__name__, 'module loaded')
