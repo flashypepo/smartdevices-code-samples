@@ -12,6 +12,7 @@ micropython.alloc_emergency_exception_buf(100)
 # used devices in main:
 use_oled_spi = True
 use_oled_i2c = True
+use_bme280 = True
 
 
 # #################################
@@ -57,3 +58,23 @@ if use_oled_spi:
 if use_oled_i2c:
     import test_oled_i2c
     test_oled_i2c.demo(wifi.mac)
+
+# #################################
+# Experment: BME280, I2C temperature sensor
+# 2018-0821: requires i2c from test_oled_i2c
+# TODO WISH: separate classes for I2C_BUS and SPI_BUS objects
+# #################################
+if use_bme280:
+    from test_oled_i2c import i2c
+
+    # Select display either I2C or SPI...
+    # Toggle '#' on next line
+    ''' use OLED-I2C display
+    from test_oled_i2c import oled as display
+    '''
+    #use OLED-SPI display
+    from test_oled_spi import oled as display
+    #'''
+
+    import test_bme280
+    test_bme280.demo(i2c, display, 2)
