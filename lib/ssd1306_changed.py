@@ -1,7 +1,7 @@
 # MicroPython SSD1306 OLED driver, I2C and SPI interfaces
 # 2018-0818 Peter: https://raw.githubusercontent.com/micropython/micropython/master/drivers/display/ssd1306.py
-# 2018-0819 PePo change in SSD1306 constructor
-#     TODO: module is not working: ArgumentError when instantiating a SSD1306_SPI object.
+# 2018-0819 PePo changed framebuf.MONO_VLSB to framebuf.MVLSB (in SSD1306 constructor code)
+#  TODO: module is not working: ArgumentError when instantiating a SSD1306_SPI object.
 
 from micropython import const
 import framebuf
