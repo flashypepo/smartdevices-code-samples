@@ -23,12 +23,9 @@ def test1():
             # button is in open state
             leds_off()
 
-# debounce oplossing
-# Opdracht
 
 if __name__ == '__main__':
     print('digital IO: button - LED demo...')
-    import buttondemo
-    # to debounce or not to debounce
-    print('test1')
-    buttondemo.test1() # no debounce
+    #''' to debounce or not to debounce
+    print('test1(): naive solution')
+    test1() # no debounce

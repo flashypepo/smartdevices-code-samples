@@ -1,15 +1,15 @@
 # digital IO
 # blinking leds
 # 3 LEDS connected to LoPy4
-# see Jupyter notebook 'LoPy4 demos - digital_IO'
-# 2018-0817 Peter
-print("See 'Smart Devices - LoPy4 demos - digital_IO'")
-# INFO: pin number mapping on the Expansion board 3.0
+# 2018-0913 Peter demo 2018-0914
+
+''' INFO: pin number mapping on the Expansion board 3.0
 from machine import Pin
 
 print('INFO: pin number mapping on the Expansion board 3.0...')
 print('G-name -- P-name')
 help(Pin.exp_board) # G-names
+#'''
 
 # LED demo
 # 3 LEDs connected to the Expansion board 3.0
@@ -17,12 +17,11 @@ help(Pin.exp_board) # G-names
 
 # from module 'machine' import the 'Pin' class
 from machine import Pin
-
 '''
 Define a LED list on several Pin on the Expansion board 3
 2018-0816: 3 LEDS, the Pin objects must be specified as Output,
            use G-names, because that is visible on the Expansion board
-'''
+#'''
 leds = [
     Pin('G28', mode=Pin.OUT),
     Pin('G22', mode=Pin.OUT),
@@ -50,6 +49,7 @@ import time
 print('LEDs on...')
 leds_on()
 time.sleep(2)
+leds_off()
 
 # #######################
 # Pattern generator
