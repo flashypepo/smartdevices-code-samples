@@ -45,7 +45,7 @@ use_lorawan = False
 import wifimanager
 
 print('Creating wifi object with a wificonfig-json ...')
-wifi = wifimanager.WifiManager('config/wificonfig_home.json') # HOME config
+wifi = wifimanager.WifiManager('config/wificonfig_template.json') # HOME config
 #myWF: wifi = wifimanager.WifiManager('config/wificonfig_wf2lopy4.json') # WF2 config
 
 #TODO: wifi = wifimanager.WifiManager('wificonfig.json') # SAMPLE Wifi-WF config
