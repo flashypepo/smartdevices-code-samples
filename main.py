@@ -1,10 +1,13 @@
-# main.py - sample
+# main.py - development
 # 1. connect to Wifi - Windesheim
 # 2. change server password
-# 2018-0911 Peter added cylon LED pattern demo
-# 2018-0820 Peter - OMG no crednetials online using GitHub
+# 2018-0920 Peter - added College 3 samples
+# 2018-0917 Peter - added import time, College 3-5 devices-flags
+# 2018-0913 Peter - cleaning up for digitalIO and analogIO
+# 2018-0906 Peter - comment connecting network
 # 2018-0814 Peter - displays only MAC-address
 
+import time
 import micropython
 # allocate memory for exceptions...
 # Pycom: https://docs.pycom.io/chapter/firmwareapi/micropython/micropython.html
@@ -18,15 +21,14 @@ use_button = False # demo button G10/P23
 use_ldr = False # demo analog LDR sensor G13/P16
 use_tmp36 = False # demo analog TMP36 sensor G0/P15
 
-# TODO: College 3: SPI (OLED display), PWM (Servo, LED), I2C (example sensor?)
+# College 3: SPI (OLED display), PWM (Servo, LED), I2C (example sensor?)
 use_spi_oled = False  # demo OLED-SPI display (default)
+use_i2c_oled = False  # demo OLED - I2C, display not in electronic package
+use_bme280 = False    # demo digital temperature sensor, sensor not in electronic package
 use_gfx = False       # EXTRA demo for drawing graphics on OLED-display(s)
 
 use_pwm_servo = False # demo PWM to control a servo
 use_pwm_led = False   # demo of PWM to control intensity of LED
-
-use_bme280 = False    # demo digital temperature sensor, sensor not in electronic package
-use_i2c_oled = False  # demo OLED - I2C, display not in electronic package
 
 
 # TODO: College 4: Wifi, MQTT?
@@ -42,11 +44,15 @@ use_lorawan = False
 # #################################
 import wifimanager
 
-#print('Creating wifi object with a wificonfig-json ...')
-wifi = wifimanager.WifiManager('config/wificonfig_template.json') # TEMPLATE Wifi-WF config
+print('Creating wifi object with a wificonfig-json ...')
+wifi = wifimanager.WifiManager('config/wificonfig_home.json') # HOME config
+#myWF: wifi = wifimanager.WifiManager('config/wificonfig_wf2lopy4.json') # WF2 config
 
-#''' TODO: College 4 include connecting to Wifi
-#print('Wifi: connecting to a Wifi network...', use_wifi)
+#TODO: wifi = wifimanager.WifiManager('wificonfig.json') # SAMPLE Wifi-WF config
+print('TODO EXERCISE: include connecting to Wifi...')
+
+#''' TODO: include connecting to Wifi
+
 if use_wifi:
     print('Connecting to network ...')
     wifi.connect()
@@ -63,8 +69,8 @@ if use_wifi:
 
 # #################################
 # show MAC-address
-# 2018-0907: MAC-address is also shown during
-# firmware upgrade as Device ID.
+# 2018-0907 MAC-address ook te zien
+# als Device ID tijdens firmware upgrade
 # #################################
 print('MAC-adres:', wifi.mac)
 
@@ -81,17 +87,14 @@ if use_leds:
         import leds
         leds.cylon_demotime()
 
-        # TODO: your code in lib/leds.py for a knight-rider pattern
-
     except KeyboardInterrupt:
         print('LED cyclon demo done')
 
-print('digital IO: button demo...', use_button)
+print('digital IO: button - LED demo...', use_button)
 if use_button:
     import buttondemo
-    buttondemo.test1() # naive solution, no debounce
-
-    #  TODO: Your code in buttondemo.py for button debounce
+    #buttondemo.test1() # no debounce
+    buttondemo.test2() # debounce
 
     print('Button demo done')
 
@@ -108,8 +111,8 @@ if use_tmp36:
     print('TMP36 on Pin...', 'P15 (GPIO0)')
     try:
         import tmp36
-
-        # TODO: add your code to add a TMP36 sensor
+        sensor = tmp36.TMP36('P15')
+        sensor.demo(25)
 
     except KeyboardInterrupt:
         print('TMP36 demo done')
@@ -124,23 +127,100 @@ if use_ldr:
     try:
         import lightsensor
 
-        # TODO: add your code in lightsensor.py for a simple lightmeter
+        # simple test
+        #lightsensor.test1()
+
+        # simple light meter with LEDs
+        lightsensor.lightmeter()
 
     except KeyboardInterrupt:
         print('LDR demo done')
 
 
 # #################################
-# College 3- M2M protocols SPI, I2C, PWM
-# 2018-0921 Peter new
+# Experiment: OLED 128*32 SPI and I2C
+# 2018-0821 added OLED-I2C and OLED-SPI
+# 2018-0819 okay with ssd1306 of DiCola
 # #################################
+print('Communications: SPI OLED-display...', use_spi_oled)
+if use_spi_oled:
+    from test_oled_spi import demo
+    demo(wifi.mac)
 
-print('M2M protocol: SPI OLED-display ...', use_spi_oled)
-print('M2M protocol: PWM (servo) ...', use_pwm_servo)
-print('M2M protocol: PWM (fading lED) ...', use_pwm_led)
+print('Communications: I2C OLED-display...', use_i2c_oled)
+if use_i2c_oled:
+    from test_oled_i2c import demo
+    demo(wifi.mac)
 
-print('M2M protocol: I2C OLED-display ...', use_i2c_oled)
-print('M2M protocol: I2C BME280 ...', use_bme280)
+# showtime...
+time.sleep(3)
+
+print('graphics ...', use_gfx)
+if use_gfx and use_spi_oled:
+    from test_oled_spi import oled as display
+    from test_gfx import demo
+    demo(display)
+
+if use_gfx and use_i2c_oled:
+    from test_oled_i2c import oled as display
+    from test_gfx import demo
+    demo(display)
+
+# showtime...
+time.sleep(3)
+
+# #################################
+# Experment: BME280, I2C temperature sensor
+# 2018-0821: requires i2c from test_oled_i2c
+# TODO WISH: separate classes for I2C_BUS and SPI_BUS objects
+# #################################
+print('Communications: I2C digital sensor BME280...', use_bme280)
+if use_bme280:
+    from test_oled_i2c import i2c
+
+    # Select display either SPI and/or I2C ...
+    if use_spi_oled:
+        from test_oled_spi import oled as display
+
+    else:
+        from test_oled_i2c import oled as display
+
+
+    import test_bme280
+    test_bme280.demo(i2c, display, 2)
+
+
+# #################################
+# Experiment PWM: servo, pulsing led
+# #################################
+print('Communications: PWM ... servo: ', use_pwm_servo)
+if use_pwm_servo:
+    # non-OOP version, using directly PWM
+    # Servo: GPIO6 / 'P19' Expansion board
+    # Vcc = 5V, signal=3V3 (GPIO)
+    from test_servo import demo
+    demo()
+
+    # TODO OOP version
+
+
+print('Communications: PWM ... LED: ', use_pwm_led)
+if use_pwm_led:
+    # LED configuration
+    #led_pin = 'P0' # yellow led - GPIO2
+    led_pin = 'P20' # blue led - GPIO7
+
+    ''' non-OOP version
+    from pulsing_led import led, pulse
+    for i in range(50):
+        pulse(led, 20)
+    '''
+    # OOP version - see lib-folder
+    from pulseled import PulseLED
+    led = PulseLED(pin=led_pin)
+    for i in range(30):
+        led.pulse(20)
+    #'''
 
 # #################################
 # College 4 - communications: Wifi, MQTT
