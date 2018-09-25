@@ -32,7 +32,7 @@ use_pwm_led = False   # demo of PWM to control intensity of LED
 
 
 # TODO: College 4: Wifi, MQTT?
-use_wifi = False   # demo Wifi
+use_wifi = True   # connect to Wifi
 use_mqtt = False   # demo MQTT
 
 # TODO: College 5, 6: LoRa / LoRaWAN
@@ -45,13 +45,11 @@ use_lorawan = False
 import wifimanager
 
 print('Creating wifi object with a wificonfig-json ...')
-wifi = wifimanager.WifiManager('config/wificonfig_template.json') # HOME config
-#myWF: wifi = wifimanager.WifiManager('config/wificonfig_wf2lopy4.json') # WF2 config
-
+#wifi = wifimanager.WifiManager('config/wificonfig_template.json') # WF plceholder config
+#myWF: wifi = wifimanager.WifiManager('config/wificonfig.json') # WF config
+wifi = wifimanager.WifiManager('config/wificonfig_home.json') # HOME
 #TODO: wifi = wifimanager.WifiManager('wificonfig.json') # SAMPLE Wifi-WF config
-print('TODO EXERCISE: include connecting to Wifi...')
-
-#''' TODO: include connecting to Wifi
+#print('TODO EXERCISE: include connecting to Wifi...')
 
 if use_wifi:
     print('Connecting to network ...')
