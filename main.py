@@ -225,6 +225,22 @@ if use_pwm_led:
 # 2018-0921 Peter new
 # #################################
 print('Communications: Wifi ...', use_wifi)
+if use_wifi and wifi.isconnected:
+    from get_webpage import http_get
+
+    # demo: get a (small) test webpage
+    print('\n== DEMO#1: getting test webpage...')
+    http_get('http://micropython.org/ks/test.html', 80) #test page
+
+    # demo: get the UTC-time
+    # Note: does not work al the time
+    print('\n\n== DEMO#2: getting the UTC time...')
+    http_get('http://time-a.nist.gov/', 13)
+
+    # demo: get your public IP
+    print('\n\n== DEMO#3: getting public IP...')
+    http_get('http://ip.jsontest.com/', 80) # JSON file
+
 print('Communications: MQTT ...', use_mqtt)
 
 # #################################
