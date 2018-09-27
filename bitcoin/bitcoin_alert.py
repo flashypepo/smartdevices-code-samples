@@ -5,7 +5,7 @@ Bitcoin alert
 pre-condition: device connected to the internet.
 
 Based upon: https://www.hackster.io/rahulkumarsingh/crypto-alert-system-using-bolt-iot-d62df1
-2018-0829 PePo new, desktop version.
+2018-0829 PePo new, desktop version. College 4 example.
  Usage: execute from Terminal, after prompt $:
     $ python3 bitcoin-alert
      (Ctrl-C to stop program)
