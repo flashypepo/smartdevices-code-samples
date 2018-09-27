@@ -1,7 +1,8 @@
 # urequests - HTPP request/response
 # 2018-0927 Peter: downloaded from https://github.com/micropython/micropython-lib
-# and changed with help from https://docs.pycom.io/firmwareapi/micropython/usocket
-#
+#   and changed with help from https://docs.pycom.io/firmwareapi/micropython/usocket
+#   Note: I've not tested all methods. Try yourself.
+
 import usocket
 
 class Response:
