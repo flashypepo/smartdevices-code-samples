@@ -1,6 +1,7 @@
 # main.py - development
 # 1. connect to Wifi - Windesheim
 # 2. change server password
+# 2018-0927 Peter - added College 4: Wifi and MQTT
 # 2018-0920 Peter - added College 3 samples
 # 2018-0917 Peter - added import time, College 3-5 devices-flags
 # 2018-0913 Peter - cleaning up for digitalIO and analogIO
@@ -23,17 +24,17 @@ use_tmp36 = False # demo analog TMP36 sensor G0/P15
 
 # College 3: SPI (OLED display), PWM (Servo, LED), I2C (example sensor?)
 use_spi_oled = False  # demo OLED-SPI display (default)
-use_i2c_oled = False  # demo OLED - I2C, display not in electronic package
-use_bme280 = False    # demo digital temperature sensor, sensor not in electronic package
+use_i2c_oled = True  # demo OLED - I2C, display not in electronic package
+use_bme280 = True    # demo digital temperature sensor, sensor not in electronic package
 use_gfx = False       # EXTRA demo for drawing graphics on OLED-display(s)
 
 use_pwm_servo = False # demo PWM to control a servo
 use_pwm_led = False   # demo of PWM to control intensity of LED
 
 
-# TODO: College 4: Wifi, MQTT?
-use_wifi = True   # connect to Wifi
-use_mqtt = False   # demo MQTT
+# College 4: Wifi, MQTT
+use_wifi = True   # demo Wifi
+use_mqtt = True   # demo MQTT: temperature -> Adafruit IO
 
 # TODO: College 5, 6: LoRa / LoRaWAN
 use_lorawan = False
@@ -45,12 +46,13 @@ use_lorawan = False
 import wifimanager
 
 print('Creating wifi object with a wificonfig-json ...')
-#wifi = wifimanager.WifiManager('config/wificonfig_template.json') # WF plceholder config
-#myWF: wifi = wifimanager.WifiManager('config/wificonfig.json') # WF config
-wifi = wifimanager.WifiManager('config/wificonfig_home.json') # HOME
-#TODO: wifi = wifimanager.WifiManager('wificonfig.json') # SAMPLE Wifi-WF config
-#print('TODO EXERCISE: include connecting to Wifi...')
+#''' HOME wifi configuration
+wifi = wifimanager.WifiManager('config/wificonfig_home.json') # HOME config
 
+''' WF wifi configuration
+
+wifi = wifimanager.WifiManager('config/wificonfig_wf2lopy4.json') # WF2 config
+#'''
 if use_wifi:
     print('Connecting to network ...')
     wifi.connect()
@@ -60,7 +62,7 @@ if use_wifi:
     # change password for Telnet, FTP etc.
     # #################################
     print('Updating username and password for telnet/ftp...')
-    wifi.change_access('micro', 'python') #change if you want
+    wifi.change_access('micro', 'python') #change it!!!
 
 #END_OF_TODO '''
 
@@ -149,29 +151,29 @@ print('Communications: I2C OLED-display...', use_i2c_oled)
 if use_i2c_oled:
     from test_oled_i2c import demo
     demo(wifi.mac)
-
-# showtime...
-time.sleep(3)
+    # showtime...
+    time.sleep(3)
 
 print('graphics ...', use_gfx)
 if use_gfx and use_spi_oled:
     from test_oled_spi import oled as display
     from test_gfx import demo
     demo(display)
+    # showtime...
+    time.sleep(3)
 
 if use_gfx and use_i2c_oled:
     from test_oled_i2c import oled as display
     from test_gfx import demo
     demo(display)
-
-# showtime...
-time.sleep(3)
+    # showtime...
+    time.sleep(3)
 
 # #################################
 # Experment: BME280, I2C temperature sensor
 # 2018-0821: requires i2c from test_oled_i2c
-# TODO WISH: separate classes for I2C_BUS and SPI_BUS objects
 # #################################
+''' 2018-0926 Peter: removed in order to do MQTT
 print('Communications: I2C digital sensor BME280...', use_bme280)
 if use_bme280:
     from test_oled_i2c import i2c
@@ -186,7 +188,7 @@ if use_bme280:
 
     import test_bme280
     test_bme280.demo(i2c, display, 2)
-
+#'''
 
 # #################################
 # Experiment PWM: servo, pulsing led
@@ -222,29 +224,24 @@ if use_pwm_led:
 
 # #################################
 # College 4 - communications: Wifi, MQTT
-# 2018-0921 Peter new
+# 2018-0927 Peter added HTTP request demo,
+#           MQTT demo with Adafruit IO
 # #################################
 print('Communications: Wifi ...', use_wifi)
-if use_wifi and wifi.isconnected:
-    from get_webpage import http_get
-
-    # demo: get a (small) test webpage
-    print('\n== DEMO#1: getting test webpage...')
-    http_get('http://micropython.org/ks/test.html', 80) #test page
-
-    # demo: get the UTC-time
-    # Note: does not work al the time
-    print('\n\n== DEMO#2: getting the UTC time...')
-    http_get('http://time-a.nist.gov/', 13)
-
-    # demo: get your public IP
-    print('\n\n== DEMO#3: getting public IP...')
-    http_get('http://ip.jsontest.com/', 80) # JSON file
+if use_wifi:
+    import get_webpage
 
 print('Communications: MQTT ...', use_mqtt)
+if use_mqtt:
+    # Peter note: An I2C object is created here,
+    #             and passed as argument.
+    from test_oled_i2c import i2c
+    import weather
+    weather.run(i2c)
 
 # #################################
 # College 5, 6 - communications: LoRa
-# 2018-0921 Peter new
+# 2018-0926 Peter new
 # #################################
 print('Communications: LoRa ...', use_lorawan)
+# Peter advice: start with an empty main.py for the LoRa colleges.
