@@ -41,16 +41,53 @@ def test1():
         sleep(1)
 
 # simple lightmeter
+from leds import leds_off, leds
 
-#TODO: put code for lightmeter here....
-# Use methods, like leds_off(), and leds-array from module leds
+TRESHOLD1 = 500  # trial-and-error numbers
+TRESHOLD2 = 2000
+TRESHOLD3 = 3000
+
+def lightmeter():
+    leds_off()  # initialize with LEDS off
+
+    while True:
+        light = ldr.voltage()
+        print('light={} mV'.format(light))
+
+        # 'dark'
+        if light < TRESHOLD1:
+            leds_off() # LEDs off
+
+        # 'bright': all LEDs on
+        elif light > TRESHOLD3:
+            leds[0].value(1)
+            leds[1].value(1)
+            leds[2].value(1)
+
+        # 'medium': some LEDs on
+        elif light > TRESHOLD2:
+            leds[0].value(1)
+            leds[1].value(1)
+            leds[2].value(0)
+
+        # 'low': one LEDs on
+        elif light > TRESHOLD1:
+            leds[0].value(1)
+            leds[1].value(0)
+            leds[2].value(0)
+
+        else:
+            leds_off()
+
+        # wait some time before next measurement
+        sleep(1)
 
 
 if __name__ == '__main__':
     try:
         # use flash light of smartphone
-        test1()
-        #TODO: lightmeter()
+        #test1()
+        lightmeter()
 
     except KeyboardInterrupt:
         print('done')
